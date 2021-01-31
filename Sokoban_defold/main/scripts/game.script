@@ -1,0 +1,68 @@
+local function prepare_level(data)
+	levels = {}
+	local i = 0
+	for w in string.gmatch(data, "[^~]+") do
+		local level_data = string.sub(w, 2)
+		local level = {}
+		local j = 0
+		for r in string.gmatch(level_data, "[^\n]+") do
+			j = j + 1
+			level[j] = r
+		end
+		i = i + 1
+		levels[i] = level
+	end
+	return levels
+end
+
+local function load_levels(self)
+	local data, error = sys.load_resource("/assets/levels/default")
+	if error == nil then
+		self.levels = prepare_level(data)
+	else
+		print(error)
+	end
+end
+
+function init(self)
+	-- Add initialization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+	load_levels(self)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

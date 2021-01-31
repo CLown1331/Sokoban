@@ -1,9 +1,10 @@
 [project]
 title = Sokoban_defold
 dependencies = https://github.com/rgrams/rendercam/archive/v1.0.1.zip
+custom_resources = /assets/levels/
 
 [bootstrap]
-main_collection = /main/main.collectionc
+main_collection = /main/collections/main.collectionc
 render = /builtins/render/default.renderc
 
 [input]
