@@ -1,10 +1,10 @@
-name: "main"
+name: "splash"
 scale_along_z: 0
 embedded_instances {
-  id: "controller"
+  id: "go"
   data: "components {\n"
-  "  id: \"controller\"\n"
-  "  component: \"/main/controller.script\"\n"
+  "  id: \"main\"\n"
+  "  component: \"/main/splash.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
@@ -18,10 +18,12 @@ embedded_instances {
   "  }\n"
   "}\n"
   "embedded_components {\n"
-  "  id: \"splash_screen\"\n"
-  "  type: \"collectionproxy\"\n"
-  "  data: \"collection: \\\"/main/splash.collection\\\"\\n"
-  "exclude: false\\n"
+  "  id: \"logo\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"tile_set: \\\"/main/splash.atlas\\\"\\n"
+  "default_animation: \\\"logo\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "blend_mode: BLEND_MODE_ALPHA\\n"
   "\"\n"
   "  position {\n"
   "    x: 0.0\n"
@@ -36,15 +38,17 @@ embedded_instances {
   "  }\n"
   "}\n"
   "embedded_components {\n"
-  "  id: \"game\"\n"
-  "  type: \"collectionproxy\"\n"
-  "  data: \"collection: \\\"/main/game.collection\\\"\\n"
-  "exclude: false\\n"
+  "  id: \"background\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"tile_set: \\\"/main/splash.atlas\\\"\\n"
+  "default_animation: \\\"background\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "blend_mode: BLEND_MODE_ALPHA\\n"
   "\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
-  "    z: 0.0\n"
+  "    z: -1.0\n"
   "  }\n"
   "  rotation {\n"
   "    x: 0.0\n"
@@ -55,8 +59,8 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 0.0
-    y: 0.0
+    x: 640.0
+    y: 360.0
     z: 0.0
   }
   rotation {
