@@ -24,12 +24,37 @@ local function load_levels(self)
     end
 end
 
+local function init_level(self, level)
+    local tile = tilemap.get_tile("/go#level_base", "layer", 6, -5)
+    print(tile)
+    pprint(level)
+    for r, v in pairs(level) do
+        local c = 0
+        for ch in v:gmatch"." do
+            if ch == "#" then
+                tilemap.set_tile("/go#level_base", "layer", r, c, 3)
+            elseif ch == "." then
+                tilemap.set_tile("/go#level_base", "layer", r, c, 43)
+            elseif ch == "@" then
+                local p = go.get_position("player")
+                p.y = c * 64
+                p.x = r * 64 - 64
+                go.set_position(p, "player")
+            else
+                tilemap.set_tile("/go#level_base", "layer", r, c, 0)
+            end
+            c = c - 1
+        end
+    end
+end
+
 function init(self)
     -- Add initialization code here
     -- Learn more: https://defold.com/manuals/script/
     -- Remove this function if not needed
     load_levels(self)
     self.selected_level = 1
+    init_level(self, self.levels[self.selected_level])
 end
 
 function final(self)
