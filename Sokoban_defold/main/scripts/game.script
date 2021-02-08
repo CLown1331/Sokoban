@@ -32,7 +32,7 @@ local function init_level(self, level)
         local c = 0
         for ch in v:gmatch"." do
             if ch == "#" then
-                tilemap.set_tile("/go#level_base", "layer", r, c, 3)
+                tilemap.set_tile("/go#level_base", "layer", r, c, 86)
             elseif ch == "." then
                 tilemap.set_tile("/go#level_base", "layer", r, c, 43)
             elseif ch == "@" then

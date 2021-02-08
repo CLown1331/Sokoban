@@ -363,7 +363,7 @@ convex_hulls {
 convex_hulls {
   index: 660
   count: 13
-  collision_group: ""
+  collision_group: "default"
 }
 convex_hulls {
   index: 673
@@ -433,7 +433,7 @@ convex_hulls {
 convex_hulls {
   index: 851
   count: 8
-  collision_group: ""
+  collision_group: "default"
 }
 convex_hulls {
   index: 859

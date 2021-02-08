@@ -19,11 +19,12 @@ function update(self, dt)
     -- Add update code here
     -- Learn more: https://defold.com/manuals/script/
     -- Remove this function if not needed
-    if vmath.length_sqr(self.input) > 1 then        -- [1]
+    if vmath.length_sqr(self.input) > 1 then
         self.input = vmath.normalize(self.input)
     end
     local movement = self.input * 64
     local p = go.get_position()
+    self.prev_position = p
     go.set_position(p + movement)
     self.input = vmath.vector3()
 end
@@ -32,9 +33,8 @@ function on_message(self, message_id, message, sender)
     -- Add message-handling code here
     -- Learn more: https://defold.com/manuals/message-passing/
     -- Remove this function if not needed
-    print(message_id)
     if message_id == hash("collision_response") then
-        print("collide")
+        go.set_position(self.prev_position)
     end
 end
 
