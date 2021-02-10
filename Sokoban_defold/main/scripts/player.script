@@ -2,41 +2,44 @@ local function draw_line(from, to, color)
     msg.post("@render:", "draw_line", { start_point = from, end_point = to, color = color })
 end
 
-local function raycast_check(self, from, to)
+local function raycast_check(self, from, to_dir)
+    local to = from + self.direction_vectors[to_dir]
     local result = physics.raycast(from, to, { hash("default"), hash("crate") })
-    pprint(result)
-    if result then
-        draw_line(from, result.position, vmath.vector4(0,1,0,1))
-        return false
-    else
+    if result == nil then
         draw_line(from, to, vmath.vector4(1,0,0,1))
         return true
     end
+    if result.group == hash("crate") then
+        local stack = {}
+        stack["count"] = 0
+        stack["to_dir"] = to_dir
+        msg.post(result.id, "check_dir", stack)
+    end
+    draw_line(from, result.position, vmath.vector4(0,1,0,1))
+    return false
 end
 
 local function check_can_move(self)
     local from = go.get_position()
     from.x = from.x + 32
     from.y = from.y - 32
-    local left = vmath.vector3(from.x - 40, from.y, 0)
-    local right = vmath.vector3(from.x + 40, from.y, 0)
-    local up = vmath.vector3(from.x, from.y + 40, 0)
-    local down = vmath.vector3(from.x, from.y - 40, 0)
-    self.can_move_left = raycast_check(self, from, left)
-    self.can_move_right = raycast_check(self, from, right)
-    self.can_move_up = raycast_check(self, from, up)
-    self.can_move_down = raycast_check(self, from, down)
+    self.can_move_left = self.can_move_left or raycast_check(self, from, "left")
+    self.can_move_right = self.can_move_right or raycast_check(self, from, "right")
+    self.can_move_up = self.can_move_up or raycast_check(self, from, "up")
+    self.can_move_down = self.can_move_down or raycast_check(self, from, "down")
 end
 
 function init(self)
-    -- Add initialization code here
-    -- Learn more: https://defold.com/manuals/script/
-    -- Remove this function if not needed
     msg.post(".", "acquire_input_focus")
     local rendercam = require "rendercam.rendercam"
     rendercam.follow("player")
     self.follow = true
     self.input = vmath.vector3()
+    self.direction_vectors = {}
+    self.direction_vectors["left"] = vmath.vector3(-40, 0, 0)
+    self.direction_vectors["right"] = vmath.vector3(40, 0, 0)
+    self.direction_vectors["up"] = vmath.vector3(0, 40, 0)
+    self.direction_vectors["down"] = vmath.vector3(0, -40, 0)
 end
 
 function final(self)
@@ -46,9 +49,10 @@ function final(self)
 end
 
 function update(self, dt)
-    -- Add update code here
-    -- Learn more: https://defold.com/manuals/script/
-    -- Remove this function if not needed
+    self.can_move_left = false
+    self.can_move_right = false
+    self.can_move_up = false
+    self.can_move_down = false
     if vmath.length_sqr(self.input) > 1 then
         self.input = vmath.normalize(self.input)
     end
@@ -61,11 +65,15 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-    -- Add message-handling code here
-    -- Learn more: https://defold.com/manuals/message-passing/
-    -- Remove this function if not needed
-    if message_id == hash("collision_response") then
-        go.set_position(self.prev_position)
+    if message_id == hash("can_move_up") then
+        self.can_move_up = self.can_move_up or message["can_move_up"]
+        print(self.can_move_up)
+    elseif message_id == hash("can_move_down") then
+        self.can_move_down = self.can_move_down or message["can_move_down"]
+    elseif message_id == hash("can_move_left") then
+        self.can_move_left = self.can_move_left or message["can_move_left"]
+    elseif message_id == hash("can_move_right") then
+        self.can_move_right = self.can_move_right or message["can_move_right"]
     end
 end
 

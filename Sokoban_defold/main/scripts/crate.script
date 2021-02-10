@@ -1,0 +1,64 @@
+local function check_dir(self, message)
+	local from = go.get_position()
+	from.x = from.x + 32
+	from.y = from.y - 32
+	local to = from + self.direction_vectors[message["to_dir"]]
+	local result = physics.raycast(from, to, { hash("default"), hash("crate") })
+	local return_field =  "can_move_" .. message["to_dir"]
+	local return_table = {}
+	return_table[return_field] = false
+	if result == nil then
+		return_table[return_field] = true
+		msg.post(message[1], return_field, return_table)
+		self.last_ok_dir = message["to_dir"]
+		return
+	end
+	msg.post(message[1], return_field, return_table)
+end
+
+function init(self)
+	self.direction_vectors = {}
+	self.direction_vectors["left"] = vmath.vector3(-40, 0, 0)
+	self.direction_vectors["right"] = vmath.vector3(40, 0, 0)
+	self.direction_vectors["up"] = vmath.vector3(0, 40, 0)
+	self.direction_vectors["down"] = vmath.vector3(0, -40, 0)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	self.last_ok_dir = "0"
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+	if message_id == hash("check_dir") then
+		message["count"] = message["count"] + 1
+		message[message["count"]] = sender
+		check_dir(self, message)
+	end
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end
