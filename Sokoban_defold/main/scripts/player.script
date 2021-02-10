@@ -3,7 +3,8 @@ local function draw_line(from, to, color)
 end
 
 local function raycast_check(self, from, to)
-    local result = physics.raycast(from, to, { hash("default") })
+    local result = physics.raycast(from, to, { hash("default"), hash("crate") })
+    pprint(result)
     if result then
         draw_line(from, result.position, vmath.vector4(0,1,0,1))
         return false

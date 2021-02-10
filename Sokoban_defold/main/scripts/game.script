@@ -40,6 +40,11 @@ local function init_level(self, level)
                 p.y = c * 64
                 p.x = r * 64 - 64
                 go.set_position(p, "player")
+            elseif ch == "$" then
+                local p = vmath.vector3()
+                p.y = c * 64
+                p.x = r * 64 - 64
+                factory.create("#cratefactory", p)
             else
                 tilemap.set_tile("/go#level_base", "layer", r, c, 0)
             end
