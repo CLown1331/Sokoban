@@ -24,12 +24,22 @@ local function load_levels(self)
     end
 end
 
+local function reset_game(self)
+    for i = -55, 55, 1 do
+        for j = -55, 55, 1 do
+            tilemap.set_tile("#level_base", "layer", i, j, 0)
+        end
+    end
+    for i = 1, self.crates["count"], 1 do
+        go.delete(self.crates[i], true)
+    end
+end
 local function init_level(self, level)
-    local tile = tilemap.get_tile("#level_base", "layer", 6, -5)
-    print(tile)
+    reset_game(self)
     pprint(level)
     self.score = 0
     self.score_to_reach = 0
+    self.crates["count"] = 0
     for r, v in pairs(level) do
         local c = 0
         for ch in v:gmatch"." do
@@ -47,13 +57,15 @@ local function init_level(self, level)
                 local p = vmath.vector3()
                 p.y = c * 64
                 p.x = r * 64 - 64
-                factory.create("#cratefactory", p)
+                self.crates["count"] = self.crates["count"] + 1
+                self.crates[self.crates["count"]] = factory.create("#cratefactory", p)
             else
                 tilemap.set_tile("#level_base", "layer", r, c, 0)
             end
             c = c - 1
         end
     end
+    self.score_to_reach = 1
 end
 
 local function update_score(self, should_add)
@@ -70,6 +82,8 @@ local function update_score(self, should_add)
 end
 
 function init(self)
+    self.crates = {}
+    self.crates["count"] = 0
     load_levels(self)
     self.selected_level = 1
     init_level(self, self.levels[self.selected_level])

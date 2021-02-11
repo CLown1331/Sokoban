@@ -1,7 +1,7 @@
 tile_set: "/assets/levels/level_tiles.tilesource"
 layers {
   id: "layer"
-  z: 0.0
+  z: 1.0
   is_visible: 1
   cell {
     x: -88
