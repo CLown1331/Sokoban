@@ -65,7 +65,6 @@ local function init_level(self, level)
             c = c - 1
         end
     end
-    self.score_to_reach = 1
 end
 
 local function update_score(self, should_add)
