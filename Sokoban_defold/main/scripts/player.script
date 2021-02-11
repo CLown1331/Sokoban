@@ -42,12 +42,6 @@ function init(self)
     self.direction_vectors["down"] = vmath.vector3(0, -40, 0)
 end
 
-function final(self)
-    -- Add finalization code here
-    -- Learn more: https://defold.com/manuals/script/
-    -- Remove this function if not needed
-end
-
 function update(self, dt)
     self.can_move_left = false
     self.can_move_right = false
@@ -67,7 +61,6 @@ end
 function on_message(self, message_id, message, sender)
     if message_id == hash("can_move_up") then
         self.can_move_up = self.can_move_up or message["can_move_up"]
-        print(self.can_move_up)
     elseif message_id == hash("can_move_down") then
         self.can_move_down = self.can_move_down or message["can_move_down"]
     elseif message_id == hash("can_move_left") then
@@ -78,15 +71,6 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
-    -- Add input-handling code here. The game object this script is attached to
-    -- must have acquired input focus:
-    --
-    --    msg.post(".", "acquire_input_focus")
-    --
-    -- All mapped input bindings will be received. Mouse and touch input will
-    -- be received regardless of where on the screen it happened.
-    -- Learn more: https://defold.com/manuals/input/
-    -- Remove this function if not needed
     if action_id == hash("up") and action.released and self.can_move_up then
         self.input.x = 0
         self.input.y = 1
@@ -102,10 +86,4 @@ function on_input(self, action_id, action)
     else
         
     end
-end
-
-function on_reload(self)
-    -- Add reload-handling code here
-    -- Learn more: https://defold.com/manuals/hot-reload/
-    -- Remove this function if not needed
 end

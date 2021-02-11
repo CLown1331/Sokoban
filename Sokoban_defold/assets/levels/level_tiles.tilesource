@@ -218,7 +218,7 @@ convex_hulls {
 convex_hulls {
   index: 334
   count: 8
-  collision_group: ""
+  collision_group: "slot"
 }
 convex_hulls {
   index: 342
@@ -527,6 +527,7 @@ convex_hulls {
 }
 collision_groups: "crate"
 collision_groups: "default"
+collision_groups: "slot"
 animations {
   id: "anim"
   start_tile: 1
