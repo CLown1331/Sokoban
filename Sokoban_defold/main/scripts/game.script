@@ -1,5 +1,5 @@
 local function prepare_level(data)
-    levels = {}
+    local levels = {}
     local i = 0
     for w in string.gmatch(data, "[^~]+") do
         local level_data = string.sub(w, 2)
