@@ -19,6 +19,10 @@ local function load_levels(self)
     local data, error = sys.load_resource("/assets/levels/default")
     if error == nil then
         self.levels = prepare_level(data)
+        self.level_count = 0
+        for _ in pairs(self.levels) do
+            self.level_count = self.level_count + 1
+        end
     else
         print(error)
     end
@@ -65,6 +69,8 @@ local function init_level(self, level)
             c = c - 1
         end
     end
+    msg.post("/game_gui", "level_count", { level_now = self.selected_level, total_level = self.level_count })    
+    msg.post("/game_gui", "score_count", { score = self.score, score_to_reach = self.score_to_reach })
 end
 
 local function update_score(self, should_add)
@@ -73,14 +79,18 @@ local function update_score(self, should_add)
     else
         self.score = self.score - 1
     end
+    msg.post("/game_gui", "score_count", { score = self.score, score_to_reach = self.score_to_reach })
     if self.score_to_reach == self.score then
         print("done")
-        self.selected_level = self.selected_level + 1
-        init_level(self, self.levels[self.selected_level])
+        if self.selected_level < self.level_count then
+            self.selected_level = self.selected_level + 1
+            init_level(self, self.levels[self.selected_level])
+        end
     end
 end
 
 function init(self)
+    msg.post(".", "acquire_input_focus")
     self.crates = {}
     self.crates["count"] = 0
     load_levels(self)
@@ -91,5 +101,15 @@ end
 function on_message(self, message_id, message, sender)
     if message_id == hash("update_score") then
         update_score(self, message["add"])
+    elseif message_id == hash("reset_game") then
+        init_level(self, self.levels[self.selected_level])
+    end
+end
+
+function on_input(self, action_id, action)
+    if action_id == hash("escape") and action.released then
+        msg.post("/game_gui", "disable")
+    else
+
     end
 end

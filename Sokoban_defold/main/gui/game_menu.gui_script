@@ -1,0 +1,34 @@
+function init(self)
+end
+
+function final(self)
+end
+
+function update(self, dt)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("disable") then
+        msg.post("/game_gui", "enable")
+		msg.post(".", "release_input_focus")
+    elseif message_id == hash("enable") then
+        msg.post(".", "acquire_input_focus")
+    end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.released then
+        local resume = gui.get_node("resume")
+        local exit = gui.get_node("exit")
+        if (gui.pick_node(resume, action.x, action.y)) then            
+            msg.post(".", "disable")
+        end
+        if (gui.pick_node(exit, action.x, action.y)) then
+			print("Time to exit!")
+        	msg.post("@system:", "exit", {code = 0})
+        end
+    end
+end
+
+function on_reload(self)
+end

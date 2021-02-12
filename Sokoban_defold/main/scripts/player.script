@@ -1,5 +1,7 @@
 local function draw_line(from, to, color)
-    msg.post("@render:", "draw_line", { start_point = from, end_point = to, color = color })
+    if sys.get_engine_info().is_debug then
+        msg.post("@render:", "draw_line", { start_point = from, end_point = to, color = color })
+    end
 end
 
 local function raycast_check(self, from, to_dir)
