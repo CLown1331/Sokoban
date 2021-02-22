@@ -1,10 +1,13 @@
 #include <gb/gb.h>
 #include "alpha.c"
 #include "levels/levels.c"
+#include "tiles.c"
+#include "blankscreen.c"
 
 void init() {
     DISPLAY_ON;
-    set_bkg_data(0, 47, alpha);
+    set_bkg_data(0, 4, tiles);
+    set_bkg_tiles(0,0,20,18, levels);
 }
 
 void check_input() {

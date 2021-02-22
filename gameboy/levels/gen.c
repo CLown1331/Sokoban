@@ -46,7 +46,8 @@ void process(FILE *input, FILE *output) {
     free(line);
 }
 
-int main() {
+int main(int argc, char** argv) {
+    int limit = atoi(argv[1]);
     FILE *input = fopen("levels", "r+");
     FILE *output = fopen("levels.c", "w+");
     char *line;
@@ -54,7 +55,7 @@ int main() {
     ssize_t nread;
     int level_count = 0;
     print("unsigned char levels[] = {");
-    while ((nread = getline(&line, &len, input)) != -1) {
+    while ((nread = getline(&line, &len, input)) != -1 && level_count < limit) {
         process(input, output);
         level_count++;
     }

@@ -1,2 +1,2 @@
 gcc -o gen.exe gen.c
-./gen.exe
+./gen.exe 1
