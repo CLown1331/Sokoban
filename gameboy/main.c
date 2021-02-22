@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 #include "alpha.c"
+#include "levels/levels.c"
 
 void init() {
     DISPLAY_ON;
