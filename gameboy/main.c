@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <gb/gb.h>
 #include "alpha.c"
 #include "levels/levels.c"
@@ -6,10 +7,14 @@
 
 int selected_level = 0;
 
+void load_level() {
+    set_bkg_tiles(0, 0, 20, 18, levels + level_index[selected_level]);
+}
+
 void init() {
     DISPLAY_ON;
     set_bkg_data(0, 4, tiles);
-    set_bkg_tiles(0,0,20,18, levels + level_index[selected_level]);
+    load_level();
 }
 
 void check_input() {
@@ -20,15 +25,17 @@ void check_input() {
         selected_level++;
         if (selected_level >= level_count) {
             selected_level = level_count - 1;
+        } else {
+            load_level();
         }
-        set_bkg_tiles(0,0,20,18, levels + level_index[selected_level]);
     }
     if (joypad() & J_LEFT) {
         selected_level--;
         if (selected_level < 0) {
             selected_level = 0;
+        } else {
+            load_level();
         }
-        set_bkg_tiles(0,0,20,18, levels + level_index[selected_level]);
     }
 }
 

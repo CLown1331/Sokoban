@@ -76,11 +76,12 @@ int main(int argc, char** argv) {
         level_count++;
     }
     print(" };\n");
-    print("unsigned char level_index[] = {");
+    print("UINT16 level_index[] = {");
     for (int i = 0; i < level_count; i++) {
         if (i != 0) {
             print(",");
         }
+        // print(" 0x%02hhX", i * map_sz);
         print(" %d", i * map_sz);
     }
     print(" };\n");
